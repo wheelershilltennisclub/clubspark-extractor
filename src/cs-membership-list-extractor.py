@@ -81,6 +81,7 @@ def extract_pdf_list():
     driver.find_element(By.CSS_SELECTOR, 'th.select-record > label:nth-child(1)').click()
     driver.find_element(By.CSS_SELECTOR, 'a.btn:nth-child(2)').click()
     driver.find_element(By.CSS_SELECTOR, '.btn-pdf').click()
+    time.sleep(5)
     print('Downloaded PDF membership list.')
     sign_out_of_clubspark()
     upload_list_to_box('.pdf')
@@ -90,6 +91,14 @@ def extract_pdf_list():
 def extract_csv_list():
     delete_preexisting_lists('.csv')
     sign_in_to_clubspark()
+    driver.find_element(By.CSS_SELECTOR, 'th.select-record > label:nth-child(1)').click()
+    driver.find_element(By.CSS_SELECTOR, 'a.btn:nth-child(2)').click()
+    driver.find_element(By.CSS_SELECTOR, '.btn-csv').click()
+    time.sleep(5)
+    print('Downloaded CSV membership list.')
+    sign_out_of_clubspark()
+    upload_list_to_box('.csv')
+    print('ClubSpark membership list extract complete.')
 
 
 if __name__ == "__main__":
