@@ -31,7 +31,7 @@ def delete_preexisting_lists(file_type):
     if len(preexisting_lists_in_downloads) > 0:
         for membership_list in preexisting_lists_in_downloads:
             os.remove(membership_list)
-        print(f'Deleted {len(preexisting_lists_in_downloads)} pre-existing membership lists in the '
+        print(f'Deleted {len(preexisting_lists_in_downloads)} pre-existing membership list(s) in the '
               f'Downloads folder.')
     else:
         print('There are no pre-existing membership lists in the Downloads folder to delete.')
@@ -39,7 +39,7 @@ def delete_preexisting_lists(file_type):
     if len(preexisting_lists_in_box) > 0:
         for membership_list in preexisting_lists_in_box:
             os.remove(membership_list)
-        print(f'Deleted {len(preexisting_lists_in_box)} pre-existing membership lists in Box.')
+        print(f'Deleted {len(preexisting_lists_in_box)} pre-existing membership list(s) in Box.')
     else:
         print('There are no pre-existing membership lists in Box to delete.')
 
