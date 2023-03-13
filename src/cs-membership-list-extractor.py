@@ -8,6 +8,7 @@ import time
 import shutil
 import glob
 import argparse
+import pandas as pd
 from common import *
 from dotenv import load_dotenv, find_dotenv
 from selenium import webdriver
@@ -23,6 +24,15 @@ driver = webdriver.Chrome(service=Service('/usr/local/bin/chromedriver'),
                           options=chrome_options)
 
 
+def delete_columns_in_csv(columns_to_delete_list):
+    downloaded_list = glob.glob(os.getenv('MEMBERSHIP_LIST_DOWNLOADS_PATH') + '.csv')
+    data = pd.read_csv(downloaded_list[0])
+    for column in columns_to_delete_list:
+        data.drop(column, inplace=True, axis=1)
+        print(f'Deleted column \'{column}\'')
+    data.to_csv(downloaded_list[0], index=False)
+
+
 def delete_preexisting_lists(file_type):
     preexisting_lists_in_downloads = glob.glob(os.getenv('MEMBERSHIP_LIST_DOWNLOADS_PATH')
                                                + file_type)
@@ -31,8 +41,8 @@ def delete_preexisting_lists(file_type):
     if len(preexisting_lists_in_downloads) > 0:
         for membership_list in preexisting_lists_in_downloads:
             os.remove(membership_list)
-        print(f'Deleted {len(preexisting_lists_in_downloads)} pre-existing membership list(s) in the '
-              f'Downloads folder.')
+        print(f'Deleted {len(preexisting_lists_in_downloads)} pre-existing membership list(s) in '
+              f'the Downloads folder.')
     else:
         print('There are no pre-existing membership lists in the Downloads folder to delete.')
 
@@ -88,7 +98,7 @@ def extract_pdf_list():
     print('ClubSpark membership list extract complete.')
 
 
-def extract_csv_list():
+def extract_csv_list(columns_to_delete_list):
     delete_preexisting_lists('.csv')
     sign_in_to_clubspark()
     driver.find_element(By.CSS_SELECTOR, 'th.select-record > label:nth-child(1)').click()
@@ -97,6 +107,7 @@ def extract_csv_list():
     time.sleep(5)
     print('Downloaded CSV membership list.')
     sign_out_of_clubspark()
+    delete_columns_in_csv(columns_to_delete_list)
     upload_list_to_box('.csv')
     print('ClubSpark membership list extract complete.')
 
@@ -109,11 +120,15 @@ if __name__ == "__main__":
     parser.add_argument('-f', '--file-type', required=True, help='The file type of the extracted '
                                                                  'membership list. Accepted file '
                                                                  'types: pdf, csv.')
+    parser.add_argument('-d', '--delete-columns', help='Comma separated list of columns in CSV to '
+                                                       'be deleted.')
     args = parser.parse_args()
+    argument_delimiter = ','
+    columns_to_delete = args.delete_columns.split(argument_delimiter)
 
     print(get_bordered_string('ClubSpark membership list extractor'))
 
     if args.file_type == 'pdf':
         extract_pdf_list()
     elif args.file_type == 'csv':
-        extract_csv_list()
+        extract_csv_list(columns_to_delete)
