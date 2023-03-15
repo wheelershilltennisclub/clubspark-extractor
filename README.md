@@ -1,2 +1,2 @@
 # cs-members-list-extractor
-Script to extract members list from ClubSpark and perform neccessary formatting before uploading to cloud file storage.
+Script to extract members list from ClubSpark and perform neccessary formatting before uploading to Box file storage.
