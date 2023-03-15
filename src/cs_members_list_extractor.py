@@ -10,6 +10,7 @@ import shutil
 import glob
 import argparse
 import pandas as pd
+from box_api import client
 from dotenv import load_dotenv, find_dotenv
 from selenium import webdriver
 from selenium.webdriver.common.by import By
