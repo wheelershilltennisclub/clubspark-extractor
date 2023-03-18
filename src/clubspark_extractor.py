@@ -1,6 +1,6 @@
 """
-Extracts membership list from ClubSpark, performs necessary formatting, then uploads file to cloud
-file storage.
+Script to extract different types of membership lists from ClubSpark and if necessary perform
+formatting on them before uploading to cloud file storage.
 """
 
 import os
@@ -10,7 +10,8 @@ import shutil
 import glob
 import argparse
 import pandas as pd
-from box_api import client
+from box_api import *
+from google_drive_api import *
 from dotenv import load_dotenv, find_dotenv
 from selenium import webdriver
 from selenium.webdriver.common.by import By
