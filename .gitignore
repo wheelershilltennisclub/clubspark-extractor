@@ -128,5 +128,6 @@ dmypy.json
 # Pyre type checker
 .pyre/
 
-# Box API config file
+# Cloud file storage API config files
 src/box_api.py
+src/google_drive_api.py
