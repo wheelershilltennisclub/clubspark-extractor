@@ -128,16 +128,22 @@ if __name__ == "__main__":
                                      description='Extracts membership list from ClubSpark, performs'
                                                  ' necessary formatting, then uploads file to cloud'
                                                  ' file storage.')
-    parser.add_argument('-f', '--file-type', required=True, help='The file type of the extracted '
-                                                                 'membership list. Accepted file '
-                                                                 'types: pdf, csv.')
-    parser.add_argument('-d', '--delete-columns', default=None, help='Comma separated list of'
-                                                                     ' columns in CSV to be'
-                                                                     ' deleted.')
+    parser.add_argument('-l', '--list-type', required=True, default='all members',
+                        help='The type of list to be extracted from ClubSpark. '
+                             'Accepted list types: \'All members\',\'Unpaid members\'')
+    parser.add_argument('-f', '--file-type', required=True,
+                        help='The file type of the list to be extracted from ClubSpark. '
+                             'Accepted file types: \'PDF\', \'CSV\'')
+    parser.add_argument('-d', '--delete-columns', default=None,
+                        help='Comma separated list of column names in extracted CSV list to be '
+                             'deleted.')
+    parser.add_argument('-u', '--upload-location', required=True, default='box',
+                        help='The location of where the extracted list will be uploaded to. '
+                        'Accepted upload locations: \'Box\', \'Google Drive\'')
     args = parser.parse_args()
     delimiter = ','
 
-    print(get_bordered_string('CLUBSPARK MEMBERS LIST EXTRACTOR', ))
+    print(get_bordered_string('CLUBSPARK EXTRACTOR'))
 
     if args.file_type == 'pdf':
         print(get_divided_string('Extract Settings'))
