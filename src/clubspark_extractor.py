@@ -54,13 +54,15 @@ if __name__ == "__main__":
             print(f'Columns to delete: {columns_to_delete}')
             print(f'Upload location: {upload_location_arg}')
             try:
-                extract_list_from_clubspark('csv', columns_to_delete)
+                extract_list_from_clubspark(driver, list_type_arg, file_type_arg,
+                                            upload_location_arg, columns_to_delete)
             except Exception as e:
                 quit_with_error(f'ClubSpark Extractor failed to execute.\n{e}')
         else:
             print(f'Upload location: {upload_location_arg}')
             try:
-                extract_list_from_clubspark('csv')
+                extract_list_from_clubspark(driver, list_type_arg, file_type_arg,
+                                            upload_location_arg)
             except Exception as e:
                 quit_with_error(f'ClubSpark Extractor failed to execute.\n{e}')
     else:
@@ -69,7 +71,6 @@ if __name__ == "__main__":
         print(f'File type: {file_type_arg}')
         print(f'Upload location: {upload_location_arg}')
         try:
-            extract_list_from_clubspark(driver, args.list_type.lower(), args.file_type.lower(),
-                                        args.upload_location.lower())
+            extract_list_from_clubspark(driver, list_type_arg, file_type_arg, upload_location_arg)
         except Exception as e:
             quit_with_error(f'ClubSpark Extractor failed to execute.\n{e}')
