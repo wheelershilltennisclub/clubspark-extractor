@@ -6,7 +6,7 @@ from dotenv import load_dotenv, find_dotenv
 load_dotenv(find_dotenv())
 
 # ClubSpark Constants
-CLUBSPARK_SERVICE_ACCOUNT_EMAIL = 'webmaster@wheelershilltennisclub.com'
+CLUBSPARK_SERVICE_ACCOUNT_EMAIL = os.environ.get('CLUBSPARK_SERVICE_ACCOUNT_EMAIL')
 CLUBSPARK_SERVICE_ACCOUNT_PASSWORD = keyring.get_password('ClubSpark Extractor - ClubSpark SA',
                                                           CLUBSPARK_SERVICE_ACCOUNT_EMAIL)
 CLUBPSPARK_SIGN_IN_URL = 'https://play.tennis.com.au/wheelershilltennisclub/Admin/Membership/members'
