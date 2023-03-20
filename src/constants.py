@@ -8,7 +8,8 @@ load_dotenv(find_dotenv())
 CLUBSPARK_SERVICE_ACCOUNT_EMAIL = os.environ.get('CLUBSPARK_SERVICE_ACCOUNT_EMAIL')
 CLUBSPARK_SERVICE_ACCOUNT_PASSWORD = keyring.get_password('ClubSpark Extractor - ClubSpark SA',
                                                           CLUBSPARK_SERVICE_ACCOUNT_EMAIL)
-CLUBPSPARK_SIGN_IN_URL = 'https://play.tennis.com.au/wheelershilltennisclub/Admin/Membership/members'
+CLUBPSPARK_SIGN_IN_URL = \
+    'https://play.tennis.com.au/wheelershilltennisclub/Admin/Membership/members'
 CLUBSPARK_SIGN_OUT_URL = 'https://play.tennis.com.au/wheelershilltennisclub/Account/SignOut'
 
 # Box Constants
