@@ -3,7 +3,10 @@ import sys
 import time
 import shutil
 import glob
+import string
 import pandas as pd
+import requests.exceptions
+
 from box_api import client
 from selenium import webdriver
 from selenium.webdriver.common.by import By
@@ -27,22 +30,22 @@ def extract_list_from_clubspark(driver, list_type, file_type, upload_location,
     delete_preexisting_lists(file_type)
     print(get_divided_string('Extract List From ClubSpark'))
     sign_in_to_clubspark(driver)
+    time.sleep(3)
     download_list(driver, list_type, file_type)
     sign_out_of_clubspark(driver)
     apply_formatting_to_csv(columns_to_delete_list)
     list_file_name = rename_list(list_type, file_type)
     if upload_location == 'box':
-        upload_list_to_box(file_type)
+        upload_list_to_box(list_file_name, list_type, file_type)
     else:
         # implement upload to google drive function
         pass
-    print('\nClubSpark members list extract complete.')
+    print('\nClubSpark extract complete.')
 
 
 def delete_preexisting_lists(file_type):
     print(get_divided_string('Delete Pre-existing Lists'))
-    preexisting_lists_in_downloads = glob.glob(os.getenv('MEMBERSHIP_LIST_DOWNLOADS_PATH')
-                                               + '.' + file_type)
+    preexisting_lists_in_downloads = glob.glob(os.getenv('LIST_DOWNLOAD_PATH') + '.' + file_type)
     if len(preexisting_lists_in_downloads) > 0:
         for membership_list in preexisting_lists_in_downloads:
             os.remove(membership_list)
@@ -100,21 +103,30 @@ def apply_formatting_to_csv(columns_to_delete_list=None):
 def rename_list(list_type, file_type):
     print(get_divided_string('Renaming List File'))
     downloaded_list = glob.glob(f'{LIST_DOWNLOAD_PATH}.{file_type}')
-    new_file_name = f'Wheelers-Hill-Tennis-Club-{list_type}.{file_type}'
+    new_file_name = f'{DOWNLOADS_FOLDER_PATH}\\Wheelers-Hill-Tennis-Club-Members-' \
+                    f'{string.capwords(list_type.split(" ", 1)[0])}.{file_type}'
     os.rename(downloaded_list[0], new_file_name)
     print(f'Renamed {downloaded_list[0]} to {new_file_name}')
     return new_file_name
 
 
-def upload_list_to_box(file_type):
+def upload_list_to_box(file_name, list_type, file_type):
     print(get_divided_string('Upload List to Box'))
-    downloaded_lists = glob.glob(os.getenv('MEMBERSHIP_LIST_DOWNLOADS_PATH') + file_type)
-    if len(downloaded_lists) > 0:
-        for membership_list in downloaded_lists:
-            shutil.move(membership_list, os.getenv('MEMBERSHIP_LIST_BOX_UPLOAD_PATH'))
-        print('List uploaded to Box.')
+    if list_type == 'all members':
+        try:
+            new_file = client.folder(BOX_ALL_MEMBERS_FOLDER_ID).upload(file_name)
+            print(f'File "{new_file.name}" uploaded to Box with file ID {new_file.id}')
+        except Exception:
+            print(f'File already exists in box, uploading a new version instead.')
+            items = client.folder(BOX_ALL_MEMBERS_FOLDER_ID).get_items()
+            for item in items:
+                if item.name == f'Wheelers-Hill-Tennis-Club-Members-All.{file_type}':
+                    file_id = item.id
+            updated_file = client.file(file_id).update_contents(file_name)
+            print(f'File "{updated_file.name}" has been updated in Box.')
     else:
-        quit_with_error('There is no list to upload to Box.')
+        new_file = client.folder(BOX_UNPAID_MEMBERS_FOLDER_ID).upload(file_name)
+        print(f'File "{new_file.name}" uploaded to Box with file ID {new_file.id}')
 
 
 def upload_list_to_google_drive():
