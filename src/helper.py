@@ -112,9 +112,10 @@ def upload_list_to_box(file_name, list_type, file_type):
         try:
             new_file = client.folder(BOX_ALL_MEMBERS_FOLDER_ID).upload(file_name)
             print(f'File "{new_file.name}" uploaded to Box with file ID {new_file.id}')
-        except Exception:
-            print(f'File already exists in box, uploading a new version instead.')
+        except Exception as e:
+            print(f'File already exists in box, uploading a new version instead.\n{e}')
             items = client.folder(BOX_ALL_MEMBERS_FOLDER_ID).get_items()
+            file_id = ''
             for item in items:
                 if item.name == f'Wheelers-Hill-Tennis-Club-Members-All.{file_type}':
                     file_id = item.id
@@ -134,11 +135,11 @@ def quit_with_error(error_msg):
     sys.exit(1)
 
 
-def get_bordered_string(string, char='#'):
-    border = char * (len(string) + 4)
-    return f'{border}\n{char} {string} {char}\n{border}'
+def get_bordered_string(input_string, char='#'):
+    border = char * (len(input_string) + 4)
+    return f'{border}\n{char} {input_string} {char}\n{border}'
 
 
-def get_divided_string(string, char='-'):
-    divider = char * len(string)
-    return f'\n{divider}\n{string}\n{divider}'
+def get_divided_string(input_string, char='-'):
+    divider = char * len(input_string)
+    return f'\n{divider}\n{input_string}\n{divider}'
