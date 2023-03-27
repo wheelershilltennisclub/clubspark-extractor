@@ -23,7 +23,7 @@ def setup_driver():
 
 def extract_list_from_clubspark(driver, list_type, file_type, upload_location,
                                 columns_to_delete_list=None):
-    delete_preexisting_lists(file_type,test)
+    delete_preexisting_lists(file_type)
     print(get_divided_string('Extract List From ClubSpark'))
     sign_in_to_clubspark(driver)
     time.sleep(3)

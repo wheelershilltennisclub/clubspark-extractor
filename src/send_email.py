@@ -14,8 +14,7 @@ def send_error_email(error_log):
     time = datetime.now().strftime("%H:%M:%S %d/%m/%Y")
 
     subject = f'Extract Failed - {time}'
-    body = f'ClubSpark Extractor has failed. An error has occurred during execution.\n\nError log:' \
-           f'\n{error_log}'
+    body = f'ClubSpark Extractor has failed. An error has occurred during execution.\n\nError log:\n'
     email_text = f'From: {from_email}\nTo: {to_email}\nSubject: {subject}\n\n{body}'
 
     try:
