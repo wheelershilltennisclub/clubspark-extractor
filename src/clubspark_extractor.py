@@ -4,6 +4,7 @@ formatting on them before uploading to cloud file storage.
 """
 
 import argparse
+import string
 from helper import quit_with_error, get_bordered_string, setup_driver, get_divided_string, \
     extract_list_from_clubspark
 
@@ -47,19 +48,19 @@ if __name__ == "__main__":
 
     if args.file_type.lower() == 'csv':
         print(get_divided_string('Extract Settings'))
-        print(f'List type: {list_type_arg}')
-        print(f'File type: {file_type_arg}')
+        print(f'List type: {string.capwords(list_type_arg)}')
+        print(f'File type: {file_type_arg.upper()}')
         if args.delete_columns is not None:
             columns_to_delete = args.delete_columns.split(',')
             print(f'Columns to delete: {columns_to_delete}')
-            print(f'Upload location: {upload_location_arg}')
+            print(f'Upload location: {string.capwords(upload_location_arg)}')
             try:
                 extract_list_from_clubspark(driver, list_type_arg, file_type_arg,
                                             upload_location_arg, columns_to_delete)
             except Exception as e:
                 quit_with_error(f'ClubSpark Extractor failed to execute.\n{e}')
         else:
-            print(f'Upload location: {upload_location_arg}')
+            print(f'Upload location: {string.capwords(upload_location_arg)}')
             try:
                 extract_list_from_clubspark(driver, list_type_arg, file_type_arg,
                                             upload_location_arg)
@@ -67,9 +68,9 @@ if __name__ == "__main__":
                 quit_with_error(f'ClubSpark Extractor failed to execute.\n{e}')
     else:
         print(get_divided_string('Extract Settings'))
-        print(f'List type: {list_type_arg}')
-        print(f'File type: {file_type_arg}')
-        print(f'Upload location: {upload_location_arg}')
+        print(f'List type: {string.capwords(list_type_arg)}')
+        print(f'File type: {string.capwords(file_type_arg)}')
+        print(f'Upload location: {string.capwords(upload_location_arg)}')
         try:
             extract_list_from_clubspark(driver, list_type_arg, file_type_arg, upload_location_arg)
         except Exception as e:
