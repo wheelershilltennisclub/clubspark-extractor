@@ -68,13 +68,17 @@ def sign_in_to_clubspark(driver):
 def download_list(driver, list_type, file_type):
     if list_type == 'all members':
         driver.find_element(By.CSS_SELECTOR, '#member').click()
-    else:
+    elif list_type == 'unpaid members':
         driver.find_element(By.CSS_SELECTOR, '#membernotpaid').click()
+    elif list_type == 'paid members':
+        driver.find_element(By.CSS_SELECTOR, '#memberpaid').click()
+    else:
+        quit_with_error('Invalid list type.')
     driver.find_element(By.CSS_SELECTOR, 'th.select-record > label:nth-child(1)').click()
     driver.find_element(By.CSS_SELECTOR, 'a.btn:nth-child(2)').click()
     driver.find_element(By.CSS_SELECTOR, '.btn-' + file_type).click()
     time.sleep(3)
-    print('Downloaded all members list.')
+    print(f'Downloaded {list_type} list.')
 
 
 def sign_out_of_clubspark(driver):
@@ -108,22 +112,29 @@ def rename_list(list_type, file_type):
 
 def upload_list_to_box(file_name, list_type, file_type):
     print(get_divided_string('Upload List to Box'))
+    folder_id = ''
     if list_type == 'all members':
-        try:
-            new_file = client.folder(BOX_ALL_MEMBERS_FOLDER_ID).upload(file_name)
-            print(f'File "{new_file.name}" uploaded to Box with file ID {new_file.id}')
-        except Exception as e:
-            print(f'File already exists in box, uploading a new version instead.\n{e}')
-            items = client.folder(BOX_ALL_MEMBERS_FOLDER_ID).get_items()
-            file_id = ''
-            for item in items:
-                if item.name == f'Wheelers-Hill-Tennis-Club-Members-All.{file_type}':
-                    file_id = item.id
-            updated_file = client.file(file_id).update_contents(file_name)
-            print(f'File "{updated_file.name}" has been updated in Box.')
+        folder_id = BOX_ALL_MEMBERS_FOLDER_ID
+    elif list_type == 'unpaid members':
+        folder_id = BOX_UNPAID_MEMBERS_FOLDER_ID
+    elif list_type == 'paid members':
+        folder_id = BOX_PAID_MEMBERS_FOLDER_ID
     else:
-        new_file = client.folder(BOX_UNPAID_MEMBERS_FOLDER_ID).upload(file_name)
+        quit_with_error('Invalid list type')
+
+    try:
+        new_file = client.folder(folder_id).upload(file_name)
         print(f'File "{new_file.name}" uploaded to Box with file ID {new_file.id}')
+    except Exception as e:
+        print(f'File already exists in box, uploading a new version instead.\n{e}')
+        items = client.folder(folder_id).get_items()
+        file_name_relative = file_name.removeprefix(f'{DOWNLOADS_FOLDER_PATH}\\')
+        file_id = ''
+        for item in items:
+            if item.name == file_name_relative:
+                file_id = item.id
+        updated_file = client.file(file_id).update_contents(file_name)
+        print(f'File "{updated_file.name}" has been updated in Box.')
 
 
 def upload_list_to_google_drive():

@@ -18,6 +18,7 @@ BOX_APP_TOKEN_PRIMARY = keyring.get_password('ClubSpark Extractor - Box App Toke
                                              'Box App Token Primary')
 BOX_ALL_MEMBERS_FOLDER_ID = '199099109731'
 BOX_UNPAID_MEMBERS_FOLDER_ID = '199098777969'
+BOX_PAID_MEMBERS_FOLDER_ID = '204534758832'
 
 # Google Drive Constants
 

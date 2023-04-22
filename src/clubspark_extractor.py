@@ -17,7 +17,8 @@ if __name__ == "__main__":
                                                  ' file storage.')
     parser.add_argument('-l', '--list-type', required=True, default='all members',
                         help='The type of list to be extracted from ClubSpark. '
-                             'Accepted list types: \'All members\',\'Unpaid members\'')
+                             'Accepted list types: \'All members\',\'Unpaid members\', '
+                             '\'Paid members\'')
     parser.add_argument('-f', '--file-type', required=True, default='csv',
                         help='The file type of the list to be extracted from ClubSpark. '
                              'Accepted file types: \'CSV\', \'PDF\'')
@@ -33,7 +34,8 @@ if __name__ == "__main__":
     file_type_arg = args.file_type.lower()
     upload_location_arg = args.upload_location.lower()
 
-    if list_type_arg != 'all members' and list_type_arg != 'unpaid members':
+    if list_type_arg != 'all members' and list_type_arg != 'unpaid members' \
+            and list_type_arg != 'paid members':
         quit_with_error('Please specify a valid list type. '
                         'Accepted list types: \'All members\', \'Unpaid members\'')
 
