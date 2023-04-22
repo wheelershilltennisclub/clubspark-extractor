@@ -6,7 +6,7 @@ from dotenv import load_dotenv, find_dotenv
 load_dotenv(find_dotenv())
 
 
-def send_error_email(error_log):
+def send_email(error_log):
     username = os.getenv('SMTP_SERVER_EMAIL')
     password = os.getenv('SMTP_SERVER_PASSWORD')
     from_email = os.getenv('FROM_EMAIL')
@@ -14,8 +14,8 @@ def send_error_email(error_log):
     time = datetime.now().strftime("%H:%M:%S %d/%m/%Y")
 
     subject = f'Extract Failed - {time}'
-    body = f'ClubSpark Extractor has failed. An error has occurred during execution.\n\nError log:' \
-           f'\n{error_log}'
+    body = f'ClubSpark Extractor has failed. An error has occurred during execution.\n\n' \
+           f'Error log:\n{error_log}'
     email_text = f'From: {from_email}\nTo: {to_email}\nSubject: {subject}\n\n{body}'
 
     try:
@@ -26,4 +26,4 @@ def send_error_email(error_log):
         smtp_server.close()
         print("Email sent successfully!")
     except Exception as ex:
-        print("Something went wrong….", ex)
+        print("Email failed.", ex)

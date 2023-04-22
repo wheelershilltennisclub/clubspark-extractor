@@ -67,14 +67,14 @@ def sign_in_to_clubspark(driver):
 
 def download_list(driver, list_type, file_type):
     if list_type == 'all members':
-        driver.find_element(By.CSS_SELECTOR, 'th.select-record > label:nth-child(1)').click()
-        driver.find_element(By.CSS_SELECTOR, 'a.btn:nth-child(2)').click()
-        driver.find_element(By.CSS_SELECTOR, '.btn-' + file_type).click()
-        time.sleep(3)
-        print('Downloaded all members list.')
+        driver.find_element(By.CSS_SELECTOR, '#member').click()
     else:
-        # implement download of unpaid members list functionality
-        pass
+        driver.find_element(By.CSS_SELECTOR, '#membernotpaid').click()
+    driver.find_element(By.CSS_SELECTOR, 'th.select-record > label:nth-child(1)').click()
+    driver.find_element(By.CSS_SELECTOR, 'a.btn:nth-child(2)').click()
+    driver.find_element(By.CSS_SELECTOR, '.btn-' + file_type).click()
+    time.sleep(3)
+    print('Downloaded all members list.')
 
 
 def sign_out_of_clubspark(driver):
@@ -87,8 +87,8 @@ def apply_formatting_to_csv(columns_to_delete_list=None):
     print(get_divided_string('Apply Formatting to CSV'))
     downloaded_list = glob.glob(LIST_DOWNLOAD_PATH + '.csv')
     data = pd.read_csv(downloaded_list[0])
-    data.rename(columns={'Venue ID': 'Access key number'}, inplace=True)
-    print(f'Renamed column \'Venue ID\' to \'Access key number\'')
+    data.rename(columns={'Venue ID': 'Access key ID'}, inplace=True)
+    print(f'Renamed column \'Venue ID\' to \'Access key ID\'')
     if columns_to_delete_list is not None:
         for column in columns_to_delete_list:
             data.drop(column, inplace=True, axis=1)

@@ -7,7 +7,7 @@ import argparse
 import string
 from helper import quit_with_error, get_bordered_string, setup_driver, get_divided_string, \
     extract_list_from_clubspark
-from send_email import send_error_email
+from emailer import send_email
 
 
 if __name__ == "__main__":
@@ -59,7 +59,7 @@ if __name__ == "__main__":
                 extract_list_from_clubspark(driver, list_type_arg, file_type_arg,
                                             upload_location_arg, columns_to_delete)
             except Exception as e:
-                send_error_email(e)
+                send_email(e)
                 quit_with_error(f'ClubSpark Extractor failed to execute.\n{e}')
         else:
             print(f'Upload location: {string.capwords(upload_location_arg)}')
@@ -67,7 +67,7 @@ if __name__ == "__main__":
                 extract_list_from_clubspark(driver, list_type_arg, file_type_arg,
                                             upload_location_arg)
             except Exception as e:
-                send_error_email(e)
+                send_email(e)
                 quit_with_error(f'ClubSpark Extractor failed to execute.\n{e}')
     else:
         print(get_divided_string('Extract Settings'))
@@ -77,5 +77,5 @@ if __name__ == "__main__":
         try:
             extract_list_from_clubspark(driver, list_type_arg, file_type_arg, upload_location_arg)
         except Exception as e:
-            send_error_email(e)
+            send_email(e)
             quit_with_error(f'ClubSpark Extractor failed to execute.\n{e}')
