@@ -1,0 +1,5 @@
+boxsdk==3.7.0
+keyring==23.13.1
+pandas==1.5.3
+python-dotenv==1.0.0
+selenium==4.9.0
